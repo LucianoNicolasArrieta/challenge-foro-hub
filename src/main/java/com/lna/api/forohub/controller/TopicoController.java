@@ -1,5 +1,6 @@
 package com.lna.api.forohub.controller;
 
+import com.lna.api.forohub.domain.topico.DatosActualizarTopico;
 import com.lna.api.forohub.domain.topico.DatosCreacionTopico;
 import com.lna.api.forohub.domain.topico.DatosRespuestaTopico;
 import com.lna.api.forohub.domain.topico.DatosTopicoCreado;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,5 +49,10 @@ public class TopicoController {
     @GetMapping("/{id}")
     public ResponseEntity<DatosRespuestaTopico> topicoPorId(@PathVariable Long id) {
         return ResponseEntity.ok(topicoService.obtenerTopicoPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DatosRespuestaTopico> actualizarTopico(@PathVariable Long id, @RequestBody DatosActualizarTopico datosActualizarTopico) {
+        return ResponseEntity.ok(topicoService.actualizarTopico(id, datosActualizarTopico));
     }
 }
