@@ -1,9 +1,9 @@
 package com.lna.api.forohub.infra.security;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,7 +27,8 @@ public class SecurityConfigurations {
         return http.csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(req -> {
-                req.anyRequest().permitAll();
+                req.requestMatchers(HttpMethod.POST, "/login", "/registro").permitAll()
+                    .anyRequest().authenticated();
             })
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
