@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,12 +55,14 @@ public class TopicoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<DatosRespuestaTopico> actualizarTopico(@PathVariable Long id, @RequestBody DatosActualizarTopico datosActualizarTopico) {
-        return ResponseEntity.ok(topicoService.actualizarTopico(id, datosActualizarTopico));
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(topicoService.actualizarTopico(id, datosActualizarTopico, userId));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity eliminarTopico(@PathVariable Long id) {
-        topicoService.eliminarTopico(id);
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        topicoService.eliminarTopico(id, userId);
         return ResponseEntity.noContent().build();
     }
 }

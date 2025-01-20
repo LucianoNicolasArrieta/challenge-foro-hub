@@ -40,7 +40,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(clientSecret); // validando firma
             verifier = JWT.require(algorithm)
-                .withIssuer("voll med")
+                .withIssuer("foro hub")
                 .build()
                 .verify(token);
             verifier.getSubject();

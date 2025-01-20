@@ -14,6 +14,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -68,7 +69,7 @@ public class TopicoService {
     }
 
     @Transactional
-    public DatosRespuestaTopico actualizarTopico(Long id, DatosActualizarTopico datosActualizarTopico) {
+    public DatosRespuestaTopico actualizarTopico(Long id, DatosActualizarTopico datosActualizarTopico, String userId) {
         if (topicoRepository.existsByTituloAndMensaje(datosActualizarTopico.titulo(), datosActualizarTopico.mensaje())) {
             throw new TopicoDuplicadoException("No se permiten topicos duplicados. Ya existe un topico con mismo titulo y mensaje.");
         }
@@ -76,13 +77,20 @@ public class TopicoService {
         Topico topico = topicoRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("No existe el topico con el id especificado"));
 
+        if (!topico.getAutor().getUsuario().equals(userId)) {
+            throw new AccessDeniedException("El topico solo puede ser actualizado por su autor");
+        }
+
         topico.actualizarDatos(datosActualizarTopico);
         return new DatosRespuestaTopico(topico);
     }
 
-    public void eliminarTopico(Long id) {
-        if (!topicoRepository.existsById(id)) {
-            throw new EntityNotFoundException("No existe el topico con el id especificado");
+    public void eliminarTopico(Long id, String userId) {
+        Topico topico = topicoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No existe el topico con el id especificado"));
+
+        if (!topico.getAutor().getUsuario().equals(userId)) {
+            throw new AccessDeniedException("El topico solo puede ser eliminado por su autor");
         }
 
         topicoRepository.deleteById(id);

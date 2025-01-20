@@ -27,8 +27,6 @@ public class UsuarioService {
         String password = bCryptPasswordEncoder.encode(datosRegistroUsuario.password());
         Usuario usuario = new Usuario(datosRegistroUsuario.usuario(), datosRegistroUsuario.email(), password);
 
-        System.out.println(usuario.getUsuario() + usuario.getPassword() + usuario.getEmail());
-
         usuarioRepository.save(usuario);
     }
 }

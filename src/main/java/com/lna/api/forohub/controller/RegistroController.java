@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
 
 @RestController
 @RequestMapping("registro")
@@ -25,6 +26,6 @@ public class RegistroController {
     public ResponseEntity registrarUsuario(@RequestBody @Valid DatosRegistroUsuario datosRegistroUsuario) {
         usuarioService.registrar(datosRegistroUsuario);
 
-        return ResponseEntity.ok("Usuario registrado exitosamente");
+        return ResponseEntity.ok(Map.of("mensaje", "Usuario registrado exitosamente"));
     }
 }
