@@ -1,6 +1,8 @@
 package com.lna.api.forohub.service;
 
+import com.lna.api.forohub.domain.curso.DatosRespuestaCurso;
 import com.lna.api.forohub.domain.topico.DatosCreacionTopico;
+import com.lna.api.forohub.domain.topico.DatosListadoTopico;
 import com.lna.api.forohub.domain.topico.DatosRespuestaTopico;
 import com.lna.api.forohub.domain.topico.Status;
 import com.lna.api.forohub.domain.topico.Topico;
@@ -8,6 +10,8 @@ import com.lna.api.forohub.repository.CursoRepository;
 import com.lna.api.forohub.repository.TopicoRepository;
 import com.lna.api.forohub.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -52,5 +56,10 @@ public class TopicoService {
 
         DatosRespuestaTopico datos = new DatosRespuestaTopico(topico);
         return datos;
+    }
+
+
+    public Page<DatosListadoTopico> listarTopicos(Pageable paginacion) {
+        return topicoRepository.findAll(paginacion).map(DatosListadoTopico::new);
     }
 }
