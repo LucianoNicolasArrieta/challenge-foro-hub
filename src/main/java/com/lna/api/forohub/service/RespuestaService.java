@@ -5,6 +5,8 @@ import com.lna.api.forohub.domain.respuesta.DatosCreacionRespuesta;
 import com.lna.api.forohub.domain.respuesta.DatosRespuestaCreada;
 import com.lna.api.forohub.domain.respuesta.DetalleRespuesta;
 import com.lna.api.forohub.domain.respuesta.Respuesta;
+import com.lna.api.forohub.domain.topico.Status;
+import com.lna.api.forohub.infra.errores.TopicoCerradoException;
 import com.lna.api.forohub.repository.RespuestaRepository;
 import com.lna.api.forohub.repository.TopicoRepository;
 import com.lna.api.forohub.repository.UsuarioRepository;
@@ -38,6 +40,10 @@ public class RespuestaService {
 
         var topico = topicoRepository.findById(datosCreacionRespuesta.topico_id())
             .orElseThrow(() -> new EntityNotFoundException("No existe un topico con el id ingresado"));
+
+        if (topico.getStatus().equals(Status.CERRADO)) {
+            throw new TopicoCerradoException("No se puede crear una respuesta en un topico ya cerrado");
+        }
 
         Respuesta respuesta = respuestaRepository.save(new Respuesta(null,
             datosCreacionRespuesta.mensaje(),
@@ -76,5 +82,19 @@ public class RespuestaService {
         }
 
         respuestaRepository.delete(respuesta);
+    }
+
+    @Transactional
+    public DetalleRespuesta marcarRespuestaComoSolucion(Long id, String userId) {
+        var respuesta = respuestaRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No existe una respuesta con el id ingresado"));
+
+        if (!respuesta.getTopico().getAutor().getUsuario().equals(userId)) {
+            throw new AccessDeniedException("La solucion solo puede ser elegida por el autor del topico");
+        }
+
+        respuesta.marcarComoSolucion();
+
+        return new DetalleRespuesta(respuesta);
     }
 }

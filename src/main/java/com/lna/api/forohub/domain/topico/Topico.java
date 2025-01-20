@@ -52,5 +52,8 @@ public class Topico {
             this.mensaje = datosActualizarTopico.mensaje();
         }
     }
-    // Respuestas
+
+    public void cerrarTopico() {
+        this.status = Status.CERRADO;
+    }
 }

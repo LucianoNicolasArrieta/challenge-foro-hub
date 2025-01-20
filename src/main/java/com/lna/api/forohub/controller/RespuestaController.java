@@ -56,4 +56,10 @@ public class RespuestaController {
         respuestaService.eliminarRespuesta(id, userId);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<DetalleRespuesta> marcarRespuestaComoSolucion(@PathVariable Long id) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok().body(respuestaService.marcarRespuestaComoSolucion(id, userId));
+    }
 }

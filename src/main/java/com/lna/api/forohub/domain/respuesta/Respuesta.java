@@ -43,4 +43,9 @@ public class Respuesta {
             this.mensaje = datosActualizarRespuesta.mensaje();
         }
     }
+
+    public void marcarComoSolucion() {
+        this.solucion = true;
+        topico.cerrarTopico();
+    }
 }
