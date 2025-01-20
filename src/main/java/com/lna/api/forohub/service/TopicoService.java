@@ -69,7 +69,6 @@ public class TopicoService {
 
     @Transactional
     public DatosRespuestaTopico actualizarTopico(Long id, DatosActualizarTopico datosActualizarTopico) {
-
         if (topicoRepository.existsByTituloAndMensaje(datosActualizarTopico.titulo(), datosActualizarTopico.mensaje())) {
             throw new TopicoDuplicadoException("No se permiten topicos duplicados. Ya existe un topico con mismo titulo y mensaje.");
         }
@@ -79,5 +78,13 @@ public class TopicoService {
 
         topico.actualizarDatos(datosActualizarTopico);
         return new DatosRespuestaTopico(topico);
+    }
+
+    public void eliminarTopico(Long id) {
+        if (!topicoRepository.existsById(id)) {
+            throw new EntityNotFoundException("No existe el topico con el id especificado");
+        }
+
+        topicoRepository.deleteById(id);
     }
 }
