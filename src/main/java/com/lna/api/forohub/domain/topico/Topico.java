@@ -4,6 +4,8 @@ import com.lna.api.forohub.domain.curso.Curso;
 import com.lna.api.forohub.domain.usuario.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,6 +34,7 @@ public class Topico {
     String mensaje;
     @Column(name = "fecha_creacion")
     LocalDateTime fechaDeCreacion;
+    @Enumerated(EnumType.STRING)
     Status status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor_id")
