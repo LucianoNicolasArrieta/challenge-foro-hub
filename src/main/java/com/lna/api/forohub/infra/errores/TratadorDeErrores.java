@@ -7,6 +7,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.Map;
@@ -39,6 +40,11 @@ public class TratadorDeErrores {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity tratarErrorAccessDenied(AccessDeniedException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity tratarErrorMissingServletRequestParameter(MissingServletRequestParameterException ex) {
+        return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
     }
 
     private record DatosErrorValidacion(String campo, String error) {
