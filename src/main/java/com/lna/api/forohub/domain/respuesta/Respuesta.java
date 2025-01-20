@@ -1,6 +1,5 @@
 package com.lna.api.forohub.domain.respuesta;
 
-import com.lna.api.forohub.controller.DatosActualizarRespuesta;
 import com.lna.api.forohub.domain.topico.Topico;
 import com.lna.api.forohub.domain.usuario.Usuario;
 import jakarta.persistence.Column;

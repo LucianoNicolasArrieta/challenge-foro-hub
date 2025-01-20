@@ -3,6 +3,7 @@ package com.lna.api.forohub.controller;
 import com.lna.api.forohub.domain.curso.DatosRegistroCurso;
 import com.lna.api.forohub.domain.curso.DatosRespuestaCurso;
 import com.lna.api.forohub.service.CursoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("cursos")
+@SecurityRequirement(name = "bearer-key")
 public class CursoController {
 
     private final CursoService cursoService;

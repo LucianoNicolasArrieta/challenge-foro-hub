@@ -5,6 +5,7 @@ import com.lna.api.forohub.domain.topico.DatosCreacionTopico;
 import com.lna.api.forohub.domain.topico.DatosRespuestaTopico;
 import com.lna.api.forohub.domain.topico.DatosTopicoCreado;
 import com.lna.api.forohub.service.TopicoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     private final TopicoService topicoService;

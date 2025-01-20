@@ -1,4 +1,4 @@
-package com.lna.api.forohub.controller;
+package com.lna.api.forohub.domain.respuesta;
 
 import jakarta.validation.constraints.NotBlank;
 

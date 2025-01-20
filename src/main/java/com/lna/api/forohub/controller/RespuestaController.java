@@ -1,9 +1,11 @@
 package com.lna.api.forohub.controller;
 
+import com.lna.api.forohub.domain.respuesta.DatosActualizarRespuesta;
 import com.lna.api.forohub.domain.respuesta.DatosCreacionRespuesta;
 import com.lna.api.forohub.domain.respuesta.DatosRespuestaCreada;
 import com.lna.api.forohub.domain.respuesta.DetalleRespuesta;
 import com.lna.api.forohub.service.RespuestaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/respuestas")
+@SecurityRequirement(name = "bearer-key")
 public class RespuestaController {
 
     private final RespuestaService respuestaService;

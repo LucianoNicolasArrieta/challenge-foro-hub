@@ -1,6 +1,6 @@
 package com.lna.api.forohub.service;
 
-import com.lna.api.forohub.controller.DatosActualizarRespuesta;
+import com.lna.api.forohub.domain.respuesta.DatosActualizarRespuesta;
 import com.lna.api.forohub.domain.respuesta.DatosCreacionRespuesta;
 import com.lna.api.forohub.domain.respuesta.DatosRespuestaCreada;
 import com.lna.api.forohub.domain.respuesta.DetalleRespuesta;
