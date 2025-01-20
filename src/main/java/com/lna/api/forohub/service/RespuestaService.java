@@ -66,4 +66,15 @@ public class RespuestaService {
 
         return new DetalleRespuesta(respuesta);
     }
+
+    public void eliminarRespuesta(Long id, String userId) {
+        var respuesta = respuestaRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No existe una respuesta con el id ingresado"));
+
+        if (!respuesta.getAutor().getUsuario().equals(userId)) {
+            throw new AccessDeniedException("La respuesta solo puede ser eliminada por su autor");
+        }
+
+        respuestaRepository.delete(respuesta);
+    }
 }
