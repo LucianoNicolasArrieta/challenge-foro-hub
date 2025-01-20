@@ -5,6 +5,8 @@ import com.lna.api.forohub.domain.curso.DatosRegistroCurso;
 import com.lna.api.forohub.domain.curso.DatosRespuestaCurso;
 import com.lna.api.forohub.repository.CursoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +23,11 @@ public class CursoService {
     @Transactional
     public DatosRespuestaCurso registrarNuevoCurso(DatosRegistroCurso datosRegistroCurso) {
         Curso curso = cursoRepository.save(new Curso(datosRegistroCurso));
-        DatosRespuestaCurso cursoRespuesta = new DatosRespuestaCurso(curso.getId(), curso.getNombre(), curso.getCategoria());
+        DatosRespuestaCurso cursoRespuesta = new DatosRespuestaCurso(curso.getId(), curso.getNombre(), curso.getCategoria().toString());
         return cursoRespuesta;
+    }
+
+    public Page<DatosRespuestaCurso> listarCursos(Pageable paginacion) {
+        return cursoRepository.findAll(paginacion).map(DatosRespuestaCurso::new);
     }
 }
