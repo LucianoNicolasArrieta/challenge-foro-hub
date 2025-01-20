@@ -1,9 +1,8 @@
 package com.lna.api.forohub.service;
 
-import com.lna.api.forohub.domain.curso.DatosRespuestaCurso;
 import com.lna.api.forohub.domain.topico.DatosCreacionTopico;
-import com.lna.api.forohub.domain.topico.DatosListadoTopico;
 import com.lna.api.forohub.domain.topico.DatosRespuestaTopico;
+import com.lna.api.forohub.domain.topico.DatosTopicoCreado;
 import com.lna.api.forohub.domain.topico.Status;
 import com.lna.api.forohub.domain.topico.Topico;
 import com.lna.api.forohub.infra.errores.IdEspecificadoNoExiste;
@@ -33,7 +32,7 @@ public class TopicoService {
     }
 
     @Transactional
-    public DatosRespuestaTopico crearNuevoTopico(DatosCreacionTopico datosCreacionTopico) {
+    public DatosTopicoCreado crearNuevoTopico(DatosCreacionTopico datosCreacionTopico) {
         if (topicoRepository.existsByTituloAndMensaje(datosCreacionTopico.titulo(), datosCreacionTopico.mensaje())) {
             throw new TopicoDuplicadoException("No se permiten topicos duplicados. Ya existe un topico con mismo titulo y mensaje.");
         }
@@ -56,12 +55,21 @@ public class TopicoService {
             autor,
             curso));
 
-        DatosRespuestaTopico datos = new DatosRespuestaTopico(topico);
-        return datos;
+        return new DatosTopicoCreado(topico);
     }
 
 
-    public Page<DatosListadoTopico> listarTopicos(Pageable paginacion) {
-        return topicoRepository.findAll(paginacion).map(DatosListadoTopico::new);
+    public Page<DatosRespuestaTopico> listarTopicos(Pageable paginacion) {
+        return topicoRepository.findAll(paginacion).map(DatosRespuestaTopico::new);
+    }
+
+    public DatosRespuestaTopico obtenerTopicoPorId(Long id) {
+        var topico = topicoRepository.findById(id).orElse(null);
+
+        if (topico == null) {
+            throw new IdEspecificadoNoExiste("No existe el topico con el id especificado");
+        }
+
+        return new DatosRespuestaTopico(topico);
     }
 }
