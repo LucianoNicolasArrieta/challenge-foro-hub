@@ -6,13 +6,11 @@ import com.lna.api.forohub.domain.topico.DatosRespuestaTopico;
 import com.lna.api.forohub.domain.topico.DatosTopicoCreado;
 import com.lna.api.forohub.domain.topico.Status;
 import com.lna.api.forohub.domain.topico.Topico;
-import com.lna.api.forohub.infra.errores.IdEspecificadoNoExiste;
 import com.lna.api.forohub.infra.errores.TopicoDuplicadoException;
 import com.lna.api.forohub.repository.CursoRepository;
 import com.lna.api.forohub.repository.TopicoRepository;
 import com.lna.api.forohub.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,15 +38,11 @@ public class TopicoService {
             throw new TopicoDuplicadoException("No se permiten topicos duplicados. Ya existe un topico con mismo titulo y mensaje.");
         }
 
-        var autor = usuarioRepository.findById(datosCreacionTopico.idAutor()).orElse(null);
-        if (autor == null) {
-            throw new IdEspecificadoNoExiste("No existe un usuario con el id ingresado");
-        }
+        var autor = usuarioRepository.findById(datosCreacionTopico.idAutor())
+            .orElseThrow(() -> new EntityNotFoundException("No existe un usuario con el id ingresado"));
 
-        var curso = cursoRepository.findById(datosCreacionTopico.idCurso()).orElse(null);
-        if (curso == null) {
-            throw new IdEspecificadoNoExiste("No existe un curso con el id ingresado");
-        }
+        var curso = cursoRepository.findById(datosCreacionTopico.idCurso())
+            .orElseThrow(() -> new EntityNotFoundException("No existe un curso con el id ingresado"));
 
         Topico topico = topicoRepository.save(new Topico(null,
             datosCreacionTopico.titulo(),
@@ -67,11 +61,8 @@ public class TopicoService {
     }
 
     public DatosRespuestaTopico obtenerTopicoPorId(Long id) {
-        var topico = topicoRepository.findById(id).orElse(null);
-
-        if (topico == null) {
-            throw new IdEspecificadoNoExiste("No existe el topico con el id especificado");
-        }
+        var topico = topicoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No existe el topico con el id especificado"));
 
         return new DatosRespuestaTopico(topico);
     }
@@ -83,10 +74,8 @@ public class TopicoService {
             throw new TopicoDuplicadoException("No se permiten topicos duplicados. Ya existe un topico con mismo titulo y mensaje.");
         }
 
-        Topico topico = topicoRepository.findById(id).orElse(null);
-        if (topico == null) {
-            throw new EntityNotFoundException("No existe el topico con el id especificado");
-        }
+        Topico topico = topicoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No existe el topico con el id especificado"));
 
         topico.actualizarDatos(datosActualizarTopico);
         return new DatosRespuestaTopico(topico);

@@ -31,11 +31,6 @@ public class TratadorDeErrores {
         return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
     }
 
-    @ExceptionHandler(IdEspecificadoNoExiste.class)
-    public ResponseEntity tratarErrorIdNoExiste(IdEspecificadoNoExiste ex) {
-        return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity tratarErrorEntityNotFound(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
