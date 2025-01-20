@@ -1,5 +1,6 @@
 package com.lna.api.forohub.service;
 
+import com.lna.api.forohub.controller.DatosActualizarRespuesta;
 import com.lna.api.forohub.domain.respuesta.DatosCreacionRespuesta;
 import com.lna.api.forohub.domain.respuesta.DatosRespuestaCreada;
 import com.lna.api.forohub.domain.respuesta.DetalleRespuesta;
@@ -11,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -49,5 +51,19 @@ public class RespuestaService {
 
     public Page<DetalleRespuesta> verRespuestasDeUnTopico(Pageable paginacion, Long topicoId) {
         return respuestaRepository.findAllByTopicoId(topicoId, paginacion).map(DetalleRespuesta::new);
+    }
+
+    @Transactional
+    public DetalleRespuesta actualizarRespuesta(Long id, DatosActualizarRespuesta datosActualizarRespuesta, String userId) {
+        var respuesta = respuestaRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No existe una respuesta con el id ingresado"));
+
+        if (!respuesta.getAutor().getUsuario().equals(userId)) {
+            throw new AccessDeniedException("La respuesta solo puede ser editada por su autor");
+        }
+
+        respuesta.actualizar(datosActualizarRespuesta);
+
+        return new DetalleRespuesta(respuesta);
     }
 }

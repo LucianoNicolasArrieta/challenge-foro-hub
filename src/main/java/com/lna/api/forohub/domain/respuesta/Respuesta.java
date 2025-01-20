@@ -1,5 +1,6 @@
 package com.lna.api.forohub.domain.respuesta;
 
+import com.lna.api.forohub.controller.DatosActualizarRespuesta;
 import com.lna.api.forohub.domain.topico.Topico;
 import com.lna.api.forohub.domain.usuario.Usuario;
 import jakarta.persistence.Column;
@@ -36,4 +37,10 @@ public class Respuesta {
     @JoinColumn(name = "autor_id")
     Usuario autor;
     Boolean solucion;
+
+    public void actualizar(DatosActualizarRespuesta datosActualizarRespuesta) {
+        if (datosActualizarRespuesta.mensaje() != null && !datosActualizarRespuesta.mensaje().isEmpty()) {
+            this.mensaje = datosActualizarRespuesta.mensaje();
+        }
+    }
 }
