@@ -6,6 +6,8 @@ import com.lna.api.forohub.domain.topico.DatosListadoTopico;
 import com.lna.api.forohub.domain.topico.DatosRespuestaTopico;
 import com.lna.api.forohub.domain.topico.Status;
 import com.lna.api.forohub.domain.topico.Topico;
+import com.lna.api.forohub.infra.errores.IdEspecificadoNoExiste;
+import com.lna.api.forohub.infra.errores.TopicoDuplicadoException;
 import com.lna.api.forohub.repository.CursoRepository;
 import com.lna.api.forohub.repository.TopicoRepository;
 import com.lna.api.forohub.repository.UsuarioRepository;
@@ -33,17 +35,17 @@ public class TopicoService {
     @Transactional
     public DatosRespuestaTopico crearNuevoTopico(DatosCreacionTopico datosCreacionTopico) {
         if (topicoRepository.existsByTituloAndMensaje(datosCreacionTopico.titulo(), datosCreacionTopico.mensaje())) {
-            throw new RuntimeException("No se permiten topicos duplicados. Ya existe un topico con mismo titulo y mensaje.");
+            throw new TopicoDuplicadoException("No se permiten topicos duplicados. Ya existe un topico con mismo titulo y mensaje.");
         }
 
         var autor = usuarioRepository.findById(datosCreacionTopico.idAutor()).orElse(null);
         if (autor == null) {
-            throw new RuntimeException("No existe un usuario con el id ingresado");
+            throw new IdEspecificadoNoExiste("No existe un usuario con el id ingresado");
         }
 
         var curso = cursoRepository.findById(datosCreacionTopico.idCurso()).orElse(null);
         if (curso == null) {
-            throw new RuntimeException("No existe un curso con el id ingresado");
+            throw new IdEspecificadoNoExiste("No existe un curso con el id ingresado");
         }
 
         Topico topico = topicoRepository.save(new Topico(null,

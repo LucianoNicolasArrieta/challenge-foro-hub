@@ -6,6 +6,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import java.util.Map;
 
 @RestControllerAdvice
 public class TratadorDeErrores {
@@ -19,7 +20,17 @@ public class TratadorDeErrores {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity tratarErrorEnumerado(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+        return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(TopicoDuplicadoException.class)
+    public ResponseEntity tratarErrorDuplicado(TopicoDuplicadoException ex) {
+        return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(IdEspecificadoNoExiste.class)
+    public ResponseEntity tratarErrorIdNoExiste(IdEspecificadoNoExiste ex) {
+        return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
     }
 
     private record DatosErrorValidacion(String campo, String error) {
