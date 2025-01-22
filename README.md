@@ -82,7 +82,7 @@ Foro Hub permite a los usuarios:
 
 ### Autenticación
 
-- **POST** `/register`: Registrar un nuevo usuario.
+- **POST** `/registro`: Registrar un nuevo usuario.
 - **POST** `/login`: Autenticar un usuario y obtener un token JWT.
 
 ### Cursos
