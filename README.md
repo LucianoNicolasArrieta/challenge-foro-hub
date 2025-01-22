@@ -125,4 +125,4 @@ La documentación incluye detalles sobre todos los endpoints, parámetros requer
 
 ---
 
-¡Gracias por tu tomarte un tiempo ver este proyecto! ⭐😊
+¡Gracias por tu tomarte un tiempo en ver este proyecto! ⭐😊
